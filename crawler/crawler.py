@@ -49,7 +49,10 @@ class Crawler():
 
 	def spider(self,url):
 		print 'spidering '+url
-		f = urllib2.urlopen(url)
+		proxy_support = urllib2.ProxyHandler({"http" : "127.0.0.1:8123"})
+		opener = urllib2.build_opener(proxy_support)
+		opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+		f = opener.open(url)
 		html = f.read()
 		parser = BeautifulSoup(html)
 		result = parser.findAll('a')
