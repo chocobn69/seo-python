@@ -29,7 +29,7 @@ CREATE TABLE `outlinks` (
   `pk_id_page` int(11) NOT NULL,
   PRIMARY KEY (`pk_id_link`),
   UNIQUE KEY `url_link` (`url_link`,`pk_id_page`)
-) ENGINE=MyISAM AUTO_INCREMENT=14943 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +48,7 @@ CREATE TABLE `pages` (
   `crawled` int(1) DEFAULT '0',
   PRIMARY KEY (`pk_id_page`),
   UNIQUE KEY `url_page` (`url_page`)
-) ENGINE=MyISAM AUTO_INCREMENT=393 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -65,7 +65,7 @@ CREATE TABLE `sites` (
   `url_site` varchar(255) NOT NULL,
   `created_date_site` datetime NOT NULL,
   PRIMARY KEY (`pk_id_site`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

@@ -13,18 +13,17 @@ class Crawler():
 	idSite = -1
 	def __init__(self,hostdb,userdb,passworddb,namedb,idSite):
 		self.idSite = idSite
-		self.db = MySQLdb.connect (host = hostdb,
-			user = userdb,
-			passwd = passworddb,
-			db = namedb)
+		try:
+			self.db = MySQLdb.connect (host = hostdb,
+				user = userdb,
+				passwd = passworddb,
+				db = namedb)
+		except Exception, error:
+			print 'Bad db connection : '+str(error)
 		self.curs = self.db.cursor()
 
-	def __del__(self):
-		self.curs.close()
-		self.db.close()
-
 	def getSite(self):
-		self.curs.execute("SELECT nom_site,url_site FROM sites WHERE pk_id_site = %s;",(self.idSite,)
+		self.curs.execute("SELECT nom_site,url_site FROM sites WHERE pk_id_site = %s;",(self.idSite,))
 		sites = self.curs.fetchall()
 		urlSite = sites[0][1]
 		return urlSite
@@ -99,9 +98,9 @@ class Crawler():
 					self.addLink(link,text,idPage)
 
 					# I dont want anchor
-					if "#" in link or "mailto:" in link:
+					if "#" in link or "mailto:" in link or link.endswith(('.jpg','.jpeg','.gif','.png','.bmp')):
 						continue
-	
+					
 					if link.startswith(urlSite):
 						# insert internal pages
 						self.addPage(link)
@@ -131,7 +130,7 @@ if sys.argv[1] != None:
 	
 	# gets config param
 	config = ConfigParser.RawConfigParser()
-	config.read('../includes/init.cfg')
+	config.read(sys.path[0]+'/../includes/init.cfg')
 	hostdb = config.get('MySQL','hostdb')
 	userdb = config.get('MySQL','userdb')
 	passworddb = config.get('MySQL','passworddb')

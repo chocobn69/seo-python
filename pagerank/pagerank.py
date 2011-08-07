@@ -11,15 +11,14 @@ class PageRank():
 	idSite = -1
 	def __init__(self,hostdb,userdb,passworddb,namedb,idSite):
 		self.idSite = idSite
-		self.db = MySQLdb.connect (host = hostdb,
-			user = userdb,
-			passwd = passworddb,
-			db = namedb)
+		try:
+			self.db = MySQLdb.connect (host = hostdb,
+				user = userdb,
+				passwd = passworddb,
+				db = namedb)
+		except Exception, error:
+			print 'Bad db connection : '+str(error)
 		self.curs = self.db.cursor()
-
-	def __del__(self):
-		self.curs.close()
-		self.db.close()
 
 	def findPages(self):
 		self.curs.execute("SELECT pk_id_page,url_page FROM pages WHERE pk_id_site = %s and pagerank_google IS NULL ORDER BY RAND();",
@@ -113,13 +112,10 @@ if sys.argv[1] != None:
 	
 	# gets config param
 	config = ConfigParser.RawConfigParser()
-	config.read('../includes/init.cfg')
+	config.read(sys.path[0]+'/../includes/init.cfg')
 	hostdb = config.get('MySQL','hostdb')
 	userdb = config.get('MySQL','userdb')
 	passworddb = config.get('MySQL','passworddb')
 	namedb = config.get('MySQL','namedb')
-
-	# gets nb workrers we want to run
-	nbWorker = int(config.get('pagerank','nbWorker'))
-
+	
 	pagerank_launch(hostdb,userdb,passworddb,namedb,idSite)
